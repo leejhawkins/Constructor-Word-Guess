@@ -1,30 +1,88 @@
 var Word = require("./Word.js");
+var Player = require("./Player")
 var inquirer = require("inquirer");
 var fs = require("fs");
 var words = [];
+var players = [];
+var guessedLetters = [];
+var playersNumber = 0;
+var turn = 0;
+initiateGame();
+function initiateGame() {
+    fs.readFile("words.txt", "utf8", function (error, data) {
+        if (error) {
+            return console.log(error)
+        }
+        words = data.split(",");
+        inquirer
+            .prompt([
+                {
+                   type: "input",
+                   message: "Number of Players (1-3): ",
+                   name: "players"
+                }
 
-fs.readFile("words.txt", "utf8", function (error, data) {
-    if (error) {
-        return console.log(error)
+            ])
+            .then(function(response){ 
+                playersNumber = response.players;
+                makePlayers(); 
+               
+            
+            })
+        
+    })
+}
+function makePlayers() {
+    console.log(playersNumber)
+    if (players.length<playersNumber) {
+        createPlayer();
+    } else {
+        playGame();
     }
-    words = data.split(",");
-    playGame()
-})
+}
+
+function createPlayer() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "Player name:  ",
+                name: "player"
+
+            }
+        ])
+        .then(function(response){
+            var newPlayer = new Player(response.player);
+            players.push(newPlayer);
+            newPlayer.number = players.length;
+            console.log(newPlayer.number);
+            makePlayers();
+            
+        })
+}
 
 function playGame() {
     var wordPick = Math.floor(Math.random() * words.length)
     var newWord = new Word(words[wordPick]);
-    var guesses = 10;
     var guessedLetters = [];
+    for (var i=0;i<players.length;i++) {
+        players[i].roundScore = 0;
+    }
 
     newWord.createPlaceholder()
-    guessWord(newWord, guesses, guessedLetters);
+    guessWord(newWord);
 
 }
 
-function guessWord(newWord, guesses, guessedLetters) {
-    var beforeGuess = newWord.contractedPlaceholder;
-
+function guessWord(newWord) {
+    var beforeGuess = newWord.contractedPlaceholder;       
+    console.log("it's " +players[turn].name + " turn")
+    var wheelValue = spinWheel();
+    console.log("Each letter is worth $" + wheelValue)
+    for (var i=0;i<players.length;i++) {
+        console.log(players[i].name + " =$" + players[i].roundScore)
+    }
+   
     inquirer
         .prompt([
             {
@@ -33,7 +91,6 @@ function guessWord(newWord, guesses, guessedLetters) {
             }
         ])
         .then(function (answer) {
-            ``
             var repeatLetter = false;
             var notALetter = false;
             if (answer.letter.match(/[a-z]/g) === null) {
@@ -48,30 +105,39 @@ function guessWord(newWord, guesses, guessedLetters) {
             }
             newWord.checkLetter(answer.letter)
             if (newWord.contractedPlaceholder === newWord.word) {
-                console.log("\n Correct! You win!!!\n")
+                console.log("\n" + players[turn].name +" wins!!!!\n")
+                players[turn].roundScore = players[turn].roundScore + newWord.instancesOf * wheelValue;
+                players[turn].gameScore = players[turn].gameScore + players[turn].roundScore;
+                console.log("Current Scores:")
+                for (var i=0;i<players.length;i++) {
+                    console.log(players[i].name + " =$" + players[i].gameScore)
+                }
+                turn++;
                 restartGame();
             } else if (newWord.contractedPlaceholder === beforeGuess && !repeatLetter && !notALetter) {
                 guessedLetters.push(answer.letter)
-                guesses = guesses - 1;
-                if (guesses <= 0) {
-                    console.log("\nYou lost\n")
-                    console.log("The correct word was:  " + newWord.word +"\n");
-                    restartGame()
+                console.log("\n Letters guessed:  " + guessedLetters + "\n");
+                if (turn===2) {
+                    turn = 0;
                 } else {
-                    console.log("\n Letters guessed:  " + guessedLetters + "\n");
-                    console.log("\nGuesses left:" + guesses+ "\n");
-                    guessWord(newWord, guesses, guessedLetters);
+                    turn++;
                 }
+                guessWord(newWord, guessedLetters);
+              
+              
             } else if (!notALetter) {
                 guessedLetters.push(answer.letter);
+                players[turn].roundScore = players[turn].roundScore + newWord.instancesOf * wheelValue;
+                console.log ("There are " + newWord.instancesOf + " " + answer.letter + "'s")
+
                 console.log("\nLetters guessed:  " + guessedLetters + "\n")
-                console.log("\nGuesses left:" + guesses+ "\n")
-                
-                guessWord(newWord, guesses, guessedLetters);
+               
+
+                guessWord(newWord,guessedLetters);
             } else {
                 console.log("\n Letters guessed:  " + guessedLetters + "\n")
-                console.log("\nGuesses left:  " + guesses+"\n")
-                guessWord(newWord, guesses, guessedLetters);
+                
+                guessWord(newWord,guessedLetters);
             }
         })
 }
@@ -88,7 +154,7 @@ function restartGame() {
             }
 
         ])
-        .then(function(response){
+        .then(function (response) {
             if (response.confirm) {
                 playGame()
 
@@ -98,5 +164,8 @@ function restartGame() {
         })
 }
 
+function spinWheel() {
+    return Math.ceil(Math.random()*10)*100
+}
 
 

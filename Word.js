@@ -3,6 +3,7 @@ var Letter = require("./Letter.js")
 
 var Word = function(word) {
     this.word = word;
+    this.instancesOf = 0;
     this.objectArray = [];
     this.placeholderArray = [];
     this.expandedPlaceholder = "";
@@ -13,7 +14,7 @@ var Word = function(word) {
             this.objectArray.push(new Letter(letter))
             
             if (letter === " "|| letter ==="'"||letter==="-"||letter===".") {
-    
+               
                 this.objectArray[i].chosen();
 
             }
@@ -27,8 +28,10 @@ var Word = function(word) {
 
     }
     this.checkLetter = function(letter) {
+        this.instancesOf = 0;
         for (var i=0;i<this.word.length;i++) {
             if (this.word.charAt(i)===letter) {
+                this.instancesOf++;
                 this.objectArray[i].chosen();
                 this.placeholderArray[i] = this.objectArray[i].placeholder;
             }
