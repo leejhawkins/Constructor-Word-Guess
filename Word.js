@@ -13,11 +13,11 @@ var Word = function(word) {
         for (var i=0;i<this.word.length;i++) {
             var letter = this.word.charAt(i)
             this.objectArray.push(new Letter(letter))
-            // this.blanks++
+            
             if (letter === " "|| letter ==="'"||letter==="-"||letter===".") {
                
                 this.objectArray[i].chosen();
-                // this.blanks--
+        
             }
             this.placeholderArray.push(this.objectArray[i].placeholder)
         }
@@ -33,7 +33,7 @@ var Word = function(word) {
         for (var i=0;i<this.word.length;i++) {
             if (this.word.charAt(i)===letter) {
                 this.instancesOf++;
-                // this.blanks--
+               
                 this.objectArray[i].chosen();
                 this.placeholderArray[i] = this.objectArray[i].placeholder;
             }
@@ -52,7 +52,7 @@ var Word = function(word) {
                 this.expandedPlaceholder = this.placeholderArray.join(" ");
                 this.contractedPlaceholder = this.placeholderArray.join("");
                 console.log("\n"+this.expandedPlaceholder+"\n");
-                // this.blanks--
+                  
                 filledBlank = true;
             }
             
