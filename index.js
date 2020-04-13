@@ -164,6 +164,7 @@ function spinTheWheel(newWord) {
                     guessedLetters.push(answer.letter);
                     players[turn].roundScore = players[turn].roundScore + newWord.instancesOf * wheelValue * 100;
                     console.log("There are " + newWord.instancesOf + " " + answer.letter + "'s")
+                    console.log(players[turn].name + " +$"+ newWord.instancesOf * wheelValue * 100)
                     guessWord(newWord, guessedLetters);
                 } else {
                     turn = loseAturn(turn)
@@ -209,6 +210,7 @@ function buyAVowel(newWord) {
                 guessedLetters.push(answer.letter);
                 players[turn].roundScore = players[turn].roundScore - newWord.instancesOf * 100;
                 console.log("There are " + newWord.instancesOf + " " + answer.letter + "'s")
+                console.log(players[turn].name + " -$"+ newWord.instancesOf * 100)
 
                 guessWord(newWord, guessedLetters);
             } else {
@@ -264,8 +266,8 @@ function printPlayers() {
     var playersScores = "";
     for (var i=0;i<players.length;i++) {
         if (turn===i) {
-            playersArray.push("<TURN -->")
-            playersArray.push(players[i].name + ">")
+            playersArray.push("(TURN -->)")
+            playersArray.push(players[i].name.toUpperCase())
         } else {
         playersArray.push(players[i].name)
         }
