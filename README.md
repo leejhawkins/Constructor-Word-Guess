@@ -39,5 +39,7 @@ If the player chooses to "Solve the puzzle", the player will be prompted to choo
 The game is won by the player who amasses the most money over the game during the chosen amount of rounds. The winner is then crowned champion of coronavirus quarantine and paraded around the room on the shoulders of the losers!!!!!   
 
 
+### Link to Demo
+
 ![Demo](images/demo.gif)
 ### [Click for Demo](https://drive.google.com/file/d/1v5fYBae4V0ZxboAHCEQcVq6pmoWt0Noo/view)
