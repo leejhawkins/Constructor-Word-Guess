@@ -7,7 +7,7 @@ Wheel of Misfortune is a command line interface, mulitplayer game similar to Whe
 
 
 ### Getting started
-![Getting Started](images/start game.jpg)
+![Getting Started](images/startgame.jpg)
 
 
 The game starts with chosing the number of players (2-5) and rounds (2-5).  The user is then prompted to create the players by adding their names.  
@@ -39,5 +39,5 @@ If the player chooses to "Solve the puzzle", the player will be prompted to choo
 The game is won by the player who amasses the most money over the game during the chosen amount of rounds. The winner is then crowned champion of coronavirus quarantine and paraded around the room on the shoulders of the losers!!!!!   
 
 
-
+![Demo](images/demo.gif)
 ### [Click for Demo](https://drive.google.com/file/d/1v5fYBae4V0ZxboAHCEQcVq6pmoWt0Noo/view)
