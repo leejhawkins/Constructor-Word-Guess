@@ -7,7 +7,7 @@ Wheel of Misfortune is a command line interface, mulitplayer game similar to Whe
 
 
 ### Getting started
-![Getting Started](images/start_game.jpg)
+![Getting Started](images/start game.jpg)
 
 
 The game starts with chosing the number of players (2-5) and rounds (2-5).  The user is then prompted to create the players by adding their names.  
